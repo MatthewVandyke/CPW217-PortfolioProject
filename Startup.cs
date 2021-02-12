@@ -1,5 +1,5 @@
-using CPW217_PortfolioProject2021.Areas.Identity.Data;
 using CPW217_PortfolioProject2021.Data;
+using CPW217_PortfolioProject2021.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +35,7 @@ namespace CPW217_PortfolioProject2021
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
 			services.AddRazorPages();
+			services.Configure<BlobConnection>(Configuration.GetSection("BlobConnection"));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

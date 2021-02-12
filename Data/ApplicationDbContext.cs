@@ -1,4 +1,4 @@
-﻿using CPW217_PortfolioProject2021.Areas.Identity.Data;
+﻿using CPW217_PortfolioProject2021.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
