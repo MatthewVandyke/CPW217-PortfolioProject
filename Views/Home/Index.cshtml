@@ -1,9 +1,12 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<CPW217_PortfolioProject2021.Models.Item>
+@inject Microsoft.Extensions.Configuration.IConfiguration _config
+
+@{
+	ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+	<h1 class="display-4">Welcome</h1>
 	<div class="card" style="width: 18rem;">
 		<img class="card-img-top" src="..." alt="Card image cap">
 		<div class="card-body">
