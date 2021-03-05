@@ -1,6 +1,10 @@
-﻿using CPW217_PortfolioProject2021.Models;
+﻿using CPW217_PortfolioProject2021.Data;
+using CPW217_PortfolioProject2021.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,16 +15,17 @@ namespace CPW217_PortfolioProject2021.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
-
-		public HomeController(ILogger<HomeController> logger)
+		private readonly ApplicationDbContext _context;
+		private readonly IConfiguration _config;
+		public HomeController(ApplicationDbContext context, IConfiguration config)
 		{
-			_logger = logger;
+			_context = context;
+			_config = config;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			return View(await _context.Items.ToListAsync());
 		}
 
 		public IActionResult Privacy()
