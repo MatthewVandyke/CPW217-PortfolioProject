@@ -24,7 +24,7 @@ namespace CPW217_PortfolioProject2021.Controllers
 		}
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Items.ToListAsync());
+			return View(await ItemDb.GetItemsAsync(_context));
 		}
 
 		public IActionResult Create()
@@ -56,8 +56,7 @@ namespace CPW217_PortfolioProject2021.Controllers
                 BlobStorageHelper helper = new BlobStorageHelper(_config);
                 item.PhotoUrl = await helper.UploadBlob(photo);
 
-                _context.Add(item);
-                await _context.SaveChangesAsync();
+                await ItemDb.AddProductAsync(_context, item);
                 return RedirectToAction(nameof(Index));
             }
             return View(item);

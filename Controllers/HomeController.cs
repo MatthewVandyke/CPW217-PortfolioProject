@@ -25,7 +25,7 @@ namespace CPW217_PortfolioProject2021.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Items.ToListAsync());
+			return View(await ItemDb.GetItemsAsync(_context));
 		}
 
 		public IActionResult Privacy()
