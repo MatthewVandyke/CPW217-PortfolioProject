@@ -59,7 +59,7 @@ namespace CPW217_PortfolioProject2021.Controllers
                 item.PhotoUrl = await helper.UploadPhotoBlob(photo);
                 item.ModelUrl = await helper.UploadModelBlob(model);
 
-                await ItemDb.AddProductAsync(_context, item);
+                await ItemDb.AddItemAsync(_context, item);
                 return RedirectToAction(nameof(Index));
             }
             return View(item);
