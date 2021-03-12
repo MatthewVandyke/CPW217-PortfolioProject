@@ -12,21 +12,24 @@
 		<div class="mb-3 w-50">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="input-group mb-3">
-				<label asp-for="Name" class="control-label"></label>
-				<input asp-for="Name" class="form-control" placeholder="Name" />
+				<input asp-for="Name" type="text" class="form-control" placeholder="Name" />
 				<span asp-validation-for="Name" class="text-danger"></span>
 			</div>
 			<div class="input-group mb-3">
-				<label asp-for="Photo" class="control-label"></label>
-				<input asp-for="Photo" type="file" class="form-control" />
-				<span asp-validation-for="Photo" class="text-danger"></span>
+				<div class="custom-file">
+					<input asp-for="Photo" type="file" class="custom-file-input" />
+					<label asp-for="Photo" class="custom-file-label">Photo</label>
+					<span asp-validation-for="Photo" class="text-danger"></span>
+				</div>
 			</div>
 			<div class="input-group mb-3">
-				<label asp-for="Model" class="control-label"></label>
-				<input asp-for="Model" type="file" class="form-control"/>
-				<span asp-validation-for="Model" class="text-danger"></span>
+				<div class="custom-file">
+					<input asp-for="Model" type="file" class="custom-file-input" />
+					<label asp-for="Model" class="custom-file-label">Model</label>
+					<span asp-validation-for="Model" class="text-danger"></span>
+				</div>
 			</div>
-			<div class="input-group">
+			<div class="form-group">
 				<input type="submit" value="Create" class="btn btn-primary" />
 			</div>
 		</div>
