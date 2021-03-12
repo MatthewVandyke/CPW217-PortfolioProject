@@ -14,7 +14,7 @@ namespace CPW217_PortfolioProject2021.Data
 			return await _context.Items.ToListAsync();
 		}
 
-		public static async Task<Item> GetProductAsync(ApplicationDbContext _context, int id)
+		public static async Task<Item> GetItemAsync(ApplicationDbContext _context, int id)
 		{
 			return await _context
 							.Items
@@ -22,21 +22,21 @@ namespace CPW217_PortfolioProject2021.Data
 							.SingleAsync();
 		}
 
-		public static async Task<Item> AddProductAsync(ApplicationDbContext _context, Item item)
+		public static async Task<Item> AddItemAsync(ApplicationDbContext _context, Item item)
 		{
 			_context.Items.Add(item);
 			await _context.SaveChangesAsync();
 			return item;
 		}
 
-		public static async Task<Item> UpdateProductAsync(ApplicationDbContext _context, Item item)
+		public static async Task<Item> UpdateItemAsync(ApplicationDbContext _context, Item item)
 		{
 			_context.Items.Update(item);
 			await _context.SaveChangesAsync();
 			return item;
 		}
 
-		public static async Task DeleteProductAsync(ApplicationDbContext _context, Item item)
+		public static async Task DeleteItemAsync(ApplicationDbContext _context, Item item)
 		{
 			_context.Items.Remove(item);
 			await _context.SaveChangesAsync();
