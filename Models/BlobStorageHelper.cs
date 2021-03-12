@@ -19,13 +19,34 @@ namespace CPW217_PortfolioProject2021.Models
 			_config = configuration;
 		}
 
-		public async Task<string> UploadBlob(IFormFile file)
+		public async Task<string> UploadPhotoBlob(IFormFile file)
 		{
 			string con = _config["BlobConnection"];
 			BlobServiceClient blobService = new BlobServiceClient(con);
 
 			// Ensure create container to hold BLOBs
 			BlobContainerClient containerClient = blobService.GetBlobContainerClient("photos");
+			if (!containerClient.Exists())
+			{
+				await containerClient.CreateAsync();
+				await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
+			}
+
+			// Add BLOB to container
+			string newFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+			BlobClient blobClient = containerClient.GetBlobClient(newFileName);
+
+			await blobClient.UploadAsync(file.OpenReadStream());
+			return newFileName;
+		}
+
+		public async Task<string> UploadModelBlob(IFormFile file)
+		{
+			string con = _config["BlobConnection"];
+			BlobServiceClient blobService = new BlobServiceClient(con);
+
+			// Ensure create container to hold BLOBs
+			BlobContainerClient containerClient = blobService.GetBlobContainerClient("models");
 			if (!containerClient.Exists())
 			{
 				await containerClient.CreateAsync();

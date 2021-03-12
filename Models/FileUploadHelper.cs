@@ -11,7 +11,7 @@ namespace FileUploadExample.Models
     {
         public enum FileTypes
         {
-            Photo, Video, Audio, Text
+            Photo,Model
         }
 
         public static bool IsFileEmpty(IFormFile file)
@@ -33,12 +33,11 @@ namespace FileUploadExample.Models
                     if (photoExtensions.Contains(extension))
                         return true;
                     return false;
-                case FileTypes.Video:
-                    break;
-                case FileTypes.Audio:
-                    break;
-                case FileTypes.Text:
-                    break;
+                case FileTypes.Model:
+                    string[] threeDExtensions = { ".stl" }; // only accpet stl for now
+                    if (threeDExtensions.Contains(extension))
+                        return true;
+                    return false;
                 default:
                     break;
             }
