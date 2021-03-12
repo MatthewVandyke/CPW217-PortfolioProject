@@ -40,21 +40,24 @@ namespace CPW217_PortfolioProject2021.Controllers
             if (ModelState.IsValid)
             {
                 IFormFile photo = item.Photo;
+                IFormFile model = item.Model;
 
-                if (photo.Length > 0)
+                if (FileUploadHelper.IsFileEmpty(model) || FileUploadHelper.IsFileEmpty(photo))
                 {
                     // Add error message
                     // return view
                 }
 
-                if (!FileUploadHelper.IsValidExtension(photo, FileUploadHelper.FileTypes.Photo))
+                if (!FileUploadHelper.IsValidExtension(photo, FileUploadHelper.FileTypes.Photo)
+                    || !FileUploadHelper.IsValidExtension(model, FileUploadHelper.FileTypes.Model))
                 {
                     // Add error message
                     // return view
                 }
 
                 BlobStorageHelper helper = new BlobStorageHelper(_config);
-                item.PhotoUrl = await helper.UploadBlob(photo);
+                item.PhotoUrl = await helper.UploadPhotoBlob(photo);
+                item.ModelUrl = await helper.UploadModelBlob(model);
 
                 await ItemDb.AddProductAsync(_context, item);
                 return RedirectToAction(nameof(Index));
