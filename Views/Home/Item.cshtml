@@ -1,0 +1,23 @@
+﻿@model CPW217_PortfolioProject2021.Models.Item
+@inject Microsoft.Extensions.Configuration.IConfiguration _config
+
+@{
+	ViewData["Title"] = "Item";
+	string storageUrlStart = _config["BlobStorageUrl"];
+}
+<div class="card-columns" style="display: inline-block;">
+	<div class="card" style="width: 45rem;">
+		<img src="@(storageUrlStart + "photos/" + Model.PhotoUrl)" class="card-img-top" alt="...">
+		<div class="card-body">
+			<h5 class="card-title">@Model.Name</h5>
+			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<a href="@(storageUrlStart + "models/" + Model.ModelUrl)" class="btn btn-primary">Download</a>
+		</div>
+	</div>
+	<div class="card"  style="width: 10rem;">
+		<div class="btn-group-vertical">
+			<button class="" type="button">Like</button>
+		</div>
+	</div>
+</div>
+
