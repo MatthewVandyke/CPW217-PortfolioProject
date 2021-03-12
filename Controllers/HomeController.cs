@@ -28,6 +28,11 @@ namespace CPW217_PortfolioProject2021.Controllers
 			return View(await ItemDb.GetItemsAsync(_context));
 		}
 
+		public async Task<IActionResult> Item(int id)
+		{
+			return View(await ItemDb.GetItemAsync(_context, id));
+		}
+
 		public IActionResult Privacy()
 		{
 			return View();
