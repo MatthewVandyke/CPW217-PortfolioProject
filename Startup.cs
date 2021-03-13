@@ -1,10 +1,12 @@
 using CPW217_PortfolioProject2021.Data;
 using CPW217_PortfolioProject2021.Models;
+using CPW217_PortfolioProject2021.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebPWrecover.Services;
 
 namespace CPW217_PortfolioProject2021
 {
@@ -34,6 +37,10 @@ namespace CPW217_PortfolioProject2021
 			services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
+			
+			services.AddTransient<IEmailSender, EmailSender>();
+			services.Configure<AuthMessageSenderOptions>(Configuration);
+
 			services.AddRazorPages();
 		}
 
