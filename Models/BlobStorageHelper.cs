@@ -26,7 +26,7 @@ namespace CPW217_PortfolioProject2021.Models
 
 			// Ensure create container to hold BLOBs
 			BlobContainerClient containerClient = blobService.GetBlobContainerClient("photos");
-			if (!containerClient.Exists())
+			if (!await containerClient.ExistsAsync())
 			{
 				await containerClient.CreateAsync();
 				await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
@@ -47,7 +47,7 @@ namespace CPW217_PortfolioProject2021.Models
 
 			// Ensure create container to hold BLOBs
 			BlobContainerClient containerClient = blobService.GetBlobContainerClient("models");
-			if (!containerClient.Exists())
+			if (!await containerClient.ExistsAsync())
 			{
 				await containerClient.CreateAsync();
 				await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
@@ -59,6 +59,40 @@ namespace CPW217_PortfolioProject2021.Models
 
 			await blobClient.UploadAsync(file.OpenReadStream());
 			return newFileName;
+		}
+
+		public async Task UpdatePhotoBlob(IFormFile file, string fileName)
+		{
+			string con = _config["BlobConnection"];
+			BlobServiceClient blobService = new BlobServiceClient(con);
+
+			// Ensure create container to hold BLOBs
+			BlobContainerClient containerClient = blobService.GetBlobContainerClient("photos");
+			if (!await containerClient.ExistsAsync())
+			{
+				await containerClient.CreateAsync();
+				await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
+			}
+
+			BlobClient blobClient = containerClient.GetBlobClient(fileName);
+			await blobClient.UploadAsync(file.OpenReadStream(), true);
+		}
+
+		public async Task UpdateModelBlob(IFormFile file, string fileName)
+		{
+			string con = _config["BlobConnection"];
+			BlobServiceClient blobService = new BlobServiceClient(con);
+
+			// Ensure create container to hold BLOBs
+			BlobContainerClient containerClient = blobService.GetBlobContainerClient("models");
+			if (!await containerClient.ExistsAsync())
+			{
+				await containerClient.CreateAsync();
+				await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
+			}
+
+			BlobClient blobClient = containerClient.GetBlobClient(fileName);
+			await blobClient.UploadAsync(file.OpenReadStream(), true);
 		}
 	}
 }

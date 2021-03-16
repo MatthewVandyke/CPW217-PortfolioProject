@@ -16,7 +16,7 @@ namespace FileUploadExample.Models
 
         public static bool IsFileEmpty(IFormFile file)
         {
-            if(file.Length == 0)
+            if(file is null || file.Length == 0)
             {
                 return true;
             }

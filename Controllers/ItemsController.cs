@@ -64,5 +64,63 @@ namespace CPW217_PortfolioProject2021.Controllers
             }
             return View(item);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+		{
+            return View(await ItemDb.GetItemAsync(_context, id));
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [RequestSizeLimit(8388608)] // 8MB
+        public async Task<IActionResult> Edit(Item item)
+		{
+            if (ModelState.IsValid)
+			{
+                IFormFile photo = item.Photo;
+                IFormFile model = item.Model;
+
+                BlobStorageHelper helper = new BlobStorageHelper(_config);
+
+                if (!FileUploadHelper.IsFileEmpty(model))
+                {
+                    if (FileUploadHelper.IsValidExtension(model, FileUploadHelper.FileTypes.Model))
+					{
+                        await helper.UpdateModelBlob(model, item.ModelUrl);
+                    }
+                    else
+					{
+                        // Add error message
+                        // return view
+                    }
+                }
+
+                if (!FileUploadHelper.IsFileEmpty(photo))
+				{
+                    if (FileUploadHelper.IsValidExtension(photo, FileUploadHelper.FileTypes.Photo))
+					{
+                        await helper.UpdatePhotoBlob(photo, item.PhotoUrl);
+                    }
+                    else
+					{
+                        // Add error message
+                        // return view
+					}
+                    
+				}
+
+                await ItemDb.UpdateItemAsync(_context, item);
+                return RedirectToAction("Item", "Home", new { id = item.Id });
+			}
+            return View(item);
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+		{
+            return RedirectToAction("Index");
+        }
     }
 }
