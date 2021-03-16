@@ -5,16 +5,34 @@
 	ViewData["Title"] = "Item";
 	string storageUrlStart = _config["BlobStorageUrl"];
 }
-<div class="card-columns" style="display: inline-block;">
+
+@Html.AntiForgeryToken()
+
+<div class="card-columns" style="display: inline-block; width: inherit">
 	<div class="card" style="width: 45rem;">
 		<img src="@(storageUrlStart + "photos/" + Model.PhotoUrl)" class="card-img-top" alt="...">
 		<div class="card-body">
 			<h5 class="card-title">@Model.Name</h5>
 			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 			<a href="@(storageUrlStart + "models/" + Model.ModelUrl)" class="btn btn-primary">Download</a>
+			@if (true /* Is author of item*/)
+			{
+				<div style="display:inline-block; width:inherit; float: right;">
+					<a asp-controller="Items" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary m-1">
+						Edit
+					</a>
+
+				</div>
+				<div style="display:inline-block; width:inherit; float: right;">
+					<div class="delete-section">
+						<a class="delete-link btn btn-danger m-1" href="@Url.Action("Delete", "Items", new { id = Model.Id })">Delete</a>
+						<div class="btn btn-primary delete-confirm m-1" style="display: none;" data-delete-id="@Model.Id">Confirm Delete</div>
+					</div>
+				</div>
+			}
 		</div>
 	</div>
-	<div class="card border-0"  style="width: 10rem;">
+	<div class="card border-0" style="width: 10rem;">
 		<div>
 			<button class="btn btn-block btn-outline-secondary m-1" type="button">Like</button>
 			<button class="btn btn-block btn-outline-secondary m-1" type="button">Comment</button>
@@ -22,3 +40,66 @@
 	</div>
 </div>
 
+@section scripts {
+	<script type="text/javascript">
+	$(function () {
+        $("a.delete-link").click(function () {
+            var deleteLink = $(this);
+            deleteLink.hide();
+            var confirmButton = deleteLink.siblings(".delete-confirm");
+            confirmButton.show();
+
+            var cancelDelete =  function () {
+                removeEvents();
+                showDeleteLink();
+            };
+
+            var deleteItem = function () {
+                removeEvents();
+                confirmButton.hide();
+                $.post(
+                    '@Url.Action("Delete", "Items")',
+                    AddAntiForgeryToken({ id: confirmButton.attr('data-delete-id') }))
+                   .done(function () {
+                       var parentRow = deleteLink.parents("tr:first");
+                       parentRow.fadeOut('fast', function () {
+                           parentRow.remove();
+                       });
+                   }).fail(function (data) {
+                       alert("error");
+                   });
+                return false;
+            };
+
+            var removeEvents = function () {
+                confirmButton.off("click", deleteItem);
+                $(document).on("click", cancelDelete);
+                $(document).off("keypress", onKeyPress);
+            };
+
+            var showDeleteLink = function () {
+                confirmButton.hide();
+                deleteLink.show();
+            };
+
+            var onKeyPress = function (e) {
+                //Cancel if escape key pressed
+                if (e.which == 27) {
+                    cancelDelete();
+                }
+            };
+
+            confirmButton.on("click", deleteItem);
+            $(document).on("click", cancelDelete);
+            $(document).on("keypress", onKeyPress);
+
+            return false;
+        });
+
+        AddAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+            return data;
+        };
+    });
+	</script>
+}
