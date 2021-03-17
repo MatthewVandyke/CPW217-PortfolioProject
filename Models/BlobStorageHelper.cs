@@ -94,5 +94,25 @@ namespace CPW217_PortfolioProject2021.Models
 			BlobClient blobClient = containerClient.GetBlobClient(fileName);
 			await blobClient.UploadAsync(file.OpenReadStream(), true);
 		}
+
+		public async Task<bool> DeletePhotoBlob(string fileName)
+		{
+			string con = _config["BlobConnection"];
+			BlobServiceClient blobService = new BlobServiceClient(con);
+			BlobContainerClient containerClient = blobService.GetBlobContainerClient("photos");
+			BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+			return await blobClient.DeleteIfExistsAsync();
+		}
+
+		public async Task<bool> DeleteModelBlob(string fileName)
+		{
+			string con = _config["BlobConnection"];
+			BlobServiceClient blobService = new BlobServiceClient(con);
+			BlobContainerClient containerClient = blobService.GetBlobContainerClient("models");
+			BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+			return await blobClient.DeleteIfExistsAsync();
+		}
 	}
 }

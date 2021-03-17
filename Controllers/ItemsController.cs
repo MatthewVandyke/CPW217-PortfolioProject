@@ -120,7 +120,15 @@ namespace CPW217_PortfolioProject2021.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int Id)
 		{
-            return Redirect("Index");
+            Item item = await ItemDb.GetItemAsync(_context, Id);
+            BlobStorageHelper blobStorageHelper = new BlobStorageHelper(_config);
+
+            await blobStorageHelper.DeletePhotoBlob(item.PhotoUrl);
+            await blobStorageHelper.DeleteModelBlob(item.ModelUrl);
+
+            await ItemDb.DeleteItemAsync(_context, item);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
