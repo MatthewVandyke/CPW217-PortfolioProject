@@ -118,9 +118,9 @@ namespace CPW217_PortfolioProject2021.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int Id)
 		{
-            return RedirectToAction("Index");
+            return Redirect("Index");
         }
     }
 }

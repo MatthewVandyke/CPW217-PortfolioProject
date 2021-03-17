@@ -23,12 +23,20 @@
 					</a>
 
 				</div>
+				
 				<div style="display:inline-block; width:inherit; float: right;">
 					<div class="delete-section">
 						<a class="delete-link btn btn-danger m-1" href="@Url.Action("Delete", "Items", new { id = Model.Id })">Delete</a>
-						<div class="btn btn-primary delete-confirm m-1" style="display: none;" data-delete-id="@Model.Id">Confirm Delete</div>
+						<form class="delete-form" asp-controller="Items" asp-action="Delete" style="display: none;">
+                            <input type="hidden" asp-for="Id" />
+							<input type="submit" value="Confirm Delete" class="btn btn-primary m-1" />
+						</form>
+					</div>
+					<div class="spinner-border" role="status" style="display: none">
+						<span class="sr-only"></span>
 					</div>
 				</div>
+				
 			}
 		</div>
 	</div>
@@ -46,39 +54,28 @@
         $("a.delete-link").click(function () {
             var deleteLink = $(this);
             deleteLink.hide();
-            var confirmButton = deleteLink.siblings(".delete-confirm");
-            confirmButton.show();
+            var deleteForm = $("form.delete-form");
+			deleteForm.show();
+			var spinner = $("div.spinner-border");
 
             var cancelDelete =  function () {
                 removeEvents();
                 showDeleteLink();
             };
 
-            var deleteItem = function () {
-                removeEvents();
-                confirmButton.hide();
-                $.post(
-                    '@Url.Action("Delete", "Items")',
-                    AddAntiForgeryToken({ id: confirmButton.attr('data-delete-id') }))
-                   .done(function () {
-                       var parentRow = deleteLink.parents("tr:first");
-                       parentRow.fadeOut('fast', function () {
-                           parentRow.remove();
-                       });
-                   }).fail(function (data) {
-                       alert("error");
-                   });
-                return false;
-            };
+			var showLoading = function () {
+				deleteForm.hide();
+				spinner.show();
+			}
 
             var removeEvents = function () {
-                confirmButton.off("click", deleteItem);
+                deleteForm.off("click", deleteItem);
                 $(document).on("click", cancelDelete);
                 $(document).off("keypress", onKeyPress);
             };
 
             var showDeleteLink = function () {
-                confirmButton.hide();
+                deleteForm.hide();
                 deleteLink.show();
             };
 
@@ -89,7 +86,7 @@
                 }
             };
 
-            confirmButton.on("click", deleteItem);
+			deleteForm.on("click", showLoading);
             $(document).on("click", cancelDelete);
             $(document).on("keypress", onKeyPress);
 
