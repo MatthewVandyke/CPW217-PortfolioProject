@@ -47,6 +47,11 @@ namespace CPW217_PortfolioProject2021.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [StringLength(35, ErrorMessage = "The {0} must be less than {1}")]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -75,7 +80,7 @@ namespace CPW217_PortfolioProject2021.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
