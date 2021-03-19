@@ -16,6 +16,9 @@ namespace CPW217_PortfolioProject2021.Models
         [Required]
         public string Name { get; set; }
 
+        [Required]
+        public string Description { get; set; }
+
 
         [NotMapped] // Does not get stored in DB
         public IFormFile Photo { get; set; }
