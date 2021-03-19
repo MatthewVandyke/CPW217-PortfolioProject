@@ -16,6 +16,10 @@
 				<span asp-validation-for="Name" class="text-danger"></span>
 			</div>
 			<div class="input-group mb-3">
+				<textarea class="form-control" asp-for="Description" placeholder="Description"></textarea>
+				<span asp-validation-for="Description" class="text-danger"></span>
+			</div>
+			<div class="input-group mb-3">
 				<div class="custom-file">
 					<input asp-for="Photo" type="file" class="custom-file-input" id="photoInp"/>
 					<label asp-for="Photo" class="custom-file-label">Photo</label>

@@ -13,7 +13,7 @@
 		<img src="@(storageUrlStart + "photos/" + Model.PhotoUrl)" class="card-img-top" alt="...">
 		<div class="card-body">
 			<h5 class="card-title">@Model.Name</h5>
-			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<p class="card-text">@Model.Description</p>
 			<a href="@(storageUrlStart + "models/" + Model.ModelUrl)" class="btn btn-primary">Download</a>
 			@if (true /* Is author of item*/)
 			{

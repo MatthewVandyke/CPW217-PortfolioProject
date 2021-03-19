@@ -25,6 +25,10 @@ namespace FileUploadExample.Models
 
         public static bool IsValidExtension(IFormFile file, FileTypes type)
         {
+            if (file is null)
+			{
+                return false;
+			}
             string extension = Path.GetExtension(file.FileName).ToLower();
             switch (type)
             {
