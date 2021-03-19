@@ -48,7 +48,7 @@ namespace CPW217_PortfolioProject2021.Controllers
                 {
                     if (FileUploadHelper.IsValidExtension(model, FileUploadHelper.FileTypes.Model))
                     {
-                        await helper.UploadModelBlob(model);
+                        item.ModelUrl = await helper.UploadModelBlob(model);
                     }
                     else
                     {
@@ -60,7 +60,7 @@ namespace CPW217_PortfolioProject2021.Controllers
                 {
                     if (FileUploadHelper.IsValidExtension(photo, FileUploadHelper.FileTypes.Photo))
                     {
-                        await helper.UploadPhotoBlob(photo);
+                        item.PhotoUrl = await helper.UploadPhotoBlob(photo);
                     }
                     else
                     {
@@ -70,9 +70,6 @@ namespace CPW217_PortfolioProject2021.Controllers
 
                 }
 
-                
-                item.PhotoUrl = await helper.UploadPhotoBlob(photo);
-                item.ModelUrl = await helper.UploadModelBlob(model);
 
                 await ItemDb.AddItemAsync(_context, item);
                 return RedirectToAction(nameof(Index));
