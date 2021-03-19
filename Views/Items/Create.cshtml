@@ -17,10 +17,13 @@
 			</div>
 			<div class="input-group mb-3">
 				<div class="custom-file">
-					<input asp-for="Photo" type="file" class="custom-file-input" />
+					<input asp-for="Photo" type="file" class="custom-file-input" id="photoInp"/>
 					<label asp-for="Photo" class="custom-file-label">Photo</label>
 					<span asp-validation-for="Photo" class="text-danger"></span>
 				</div>
+			</div>
+			<div class="mb-3">
+				<img id="photo-preview" class="img-thumbnail" style="display: none;">
 			</div>
 			<div class="input-group mb-3">
 				<div class="custom-file">
@@ -41,4 +44,19 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<script type="text/javascript">
+		$("#photoInp").change(function () {
+			if (this.files && this.files[0]) {
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+					$("#photo-preview").attr('src', e.target.result);
+				}
+
+				reader.readAsDataURL(this.files[0]);
+				$("#photo-preview").show();
+			}
+		});
+	</script>
 }
